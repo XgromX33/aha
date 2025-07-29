@@ -1,6 +1,8 @@
 // Global movies array - will be populated from database
 let movies = [];
 let moviesLoaded = false;
+let categories = [];
+let categoriesLoaded = false;
 
 // Function to load movies from database
 async function loadMoviesFromDatabase() {
@@ -77,6 +79,56 @@ async function ensureMoviesLoaded() {
         await loadMoviesFromDatabase();
     }
     return movies;
+}
+
+// Function to load categories from database
+async function loadCategoriesFromDatabase() {
+    if (categoriesLoaded) {
+        return categories;
+    }
+
+    try {
+        console.log('📂 Loading categories from database...');
+        const response = await fetch('categories_api.php');
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success && data.categories) {
+            categories = data.categories;
+            categoriesLoaded = true;
+            
+            // Make categories globally available
+            window.categories = categories;
+            
+            console.log(`✅ Loaded ${categories.length} categories from database`);
+            return categories;
+        } else {
+            throw new Error(data.error || 'Failed to load categories');
+        }
+    } catch (error) {
+        console.error('❌ Error loading categories from database:', error);
+        
+        // Fallback to empty array if database fails
+        categories = [];
+        window.categories = categories;
+        
+        // Show user-friendly error message
+        showErrorMessage('Nie udało się załadować kategorii z bazy danych. Spróbuj odświeżyć stronę.');
+        
+        return categories;
+    }
+}
+
+// Function to ensure categories are loaded before using them
+async function ensureCategoriesLoaded() {
+    if (!categoriesLoaded) {
+        await loadCategoriesFromDatabase();
+    }
+    return categories;
 }
 
     // Initialize Lucide icons
@@ -504,13 +556,13 @@ async function ensureMoviesLoaded() {
       // Load movies from database first
       await loadMoviesFromDatabase();
       
+      // Load categories from database
+      await loadCategoriesFromDatabase();
+      
       // Initialize featured movie
       await initializeFeaturedMovie();
 
       const recommendedMovies = document.getElementById('recommended-movies');
-      const dramaMovies = document.getElementById('drama-movies');
-      const fantasyMovies = document.getElementById('fantasy-movies');
-      const crimeMovies = document.getElementById('crime-movies');
 
       if (recommendedMovies) {
         if (movies.length > 0) {
@@ -520,41 +572,8 @@ async function ensureMoviesLoaded() {
         }
       }
 
-      if (dramaMovies) {
-        const dramaList = getMoviesByCategory('Dramat');
-        if (dramaList.length > 0) {
-          dramaMovies.innerHTML = dramaList.map((movie, index) => {
-            const originalIndex = movies.findIndex(m => m.title === movie.title);
-            return createMovieCard(movie, originalIndex);
-          }).join('');
-        } else {
-          dramaMovies.innerHTML = '<div class="empty-section">Brak filmów w tej kategorii</div>';
-        }
-      }
-
-      if (fantasyMovies) {
-        const fantasyList = getMoviesByCategory('Fantasy');
-        if (fantasyList.length > 0) {
-          fantasyMovies.innerHTML = fantasyList.map((movie, index) => {
-            const originalIndex = movies.findIndex(m => m.title === movie.title);
-            return createMovieCard(movie, originalIndex);
-          }).join('');
-        } else {
-          fantasyMovies.innerHTML = '<div class="empty-section">Brak filmów w tej kategorii</div>';
-        }
-      }
-
-      if (crimeMovies) {
-        const crimeList = getMoviesByCategory('Kryminał');
-        if (crimeList.length > 0) {
-          crimeMovies.innerHTML = crimeList.map((movie, index) => {
-            const originalIndex = movies.findIndex(m => m.title === movie.title);
-            return createMovieCard(movie, originalIndex);
-          }).join('');
-        } else {
-          crimeMovies.innerHTML = '<div class="empty-section">Brak filmów w tej kategorii</div>';
-        }
-      }
+      // Dynamically populate category sections
+      await populateCategorySections();
 
       // Set up movie overlay for all newly created cards on main page
       setupMovieOverlay();
@@ -588,6 +607,56 @@ async function ensureMoviesLoaded() {
         });
       });
     });
+
+    // Function to populate category sections dynamically
+    async function populateCategorySections() {
+      await ensureCategoriesLoaded();
+      await ensureMoviesLoaded();
+      
+      // Find all category sections that need to be populated
+      const categorySections = document.querySelectorAll('.category-row[data-category]');
+      
+      categorySections.forEach(section => {
+        const categoryName = section.dataset.category;
+        const movieContainer = section.querySelector('.movie-row');
+        
+        if (movieContainer) {
+          const categoryMovies = getMoviesByCategory(categoryName);
+          
+          if (categoryMovies.length > 0) {
+            movieContainer.innerHTML = categoryMovies.map((movie, index) => {
+              const originalIndex = movies.findIndex(m => m.title === movie.title);
+              return createMovieCard(movie, originalIndex);
+            }).join('');
+          } else {
+            movieContainer.innerHTML = '<div class="empty-section">Brak filmów w tej kategorii</div>';
+          }
+        }
+      });
+      
+      // Also populate any sections with specific IDs (for backward compatibility)
+      const specificSections = [
+        { id: 'drama-movies', category: 'Dramat' },
+        { id: 'fantasy-movies', category: 'Fantasy' },
+        { id: 'crime-movies', category: 'Kryminał' }
+      ];
+      
+      specificSections.forEach(({ id, category }) => {
+        const container = document.getElementById(id);
+        if (container) {
+          const categoryMovies = getMoviesByCategory(category);
+          
+          if (categoryMovies.length > 0) {
+            container.innerHTML = categoryMovies.map((movie, index) => {
+              const originalIndex = movies.findIndex(m => m.title === movie.title);
+              return createMovieCard(movie, originalIndex);
+            }).join('');
+          } else {
+            container.innerHTML = '<div class="empty-section">Brak filmów w tej kategorii</div>';
+          }
+        }
+      });
+    }
 
     // Global variable for overlay management
     let currentOverlay = null;

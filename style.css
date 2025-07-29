@@ -1,4 +1,24 @@
-/* Toast Notifications */
+/*
+ * style.css
+ *
+ * Ten plik CSS zawiera wszystkie globalne style, zmienne kolorów,
+ * responsywne media queries oraz style dla poszczególnych komponentów
+ * i sekcji aplikacji. Zapewnia spójny wygląd i działanie na różnych urządzeniach.
+ *
+ * Wykorzystywany na wszystkich stronach HTML:
+ * - `index.html`
+ * - `Filmy.html`
+ * - `Kategorie.html`
+ * - `Lista do obejrzenia.html`
+ * - `Logowanie.html`
+ * - `Rejestracja.html`
+ * - `Konto.html`
+ * - `player.html`
+ * - `polityka-prywatnosci.html`
+ * - `biuro_licencje.html`
+ */
+
+/* Toast Notifications - Style dla wyskakujących powiadomień */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -21,17 +41,18 @@
   transform: translateY(0);
 }
 
+/* Zmienne CSS (Custom Properties) - Definicja palety kolorów */
 :root {
-  --color-primary: #e50914;
-  --color-primary-dark: #b2070f;
-  --color-surface: #141414;
-  --color-surface-dark: #000000;
-  --color-surface-light: #232323;
-  --color-text: #ffffff;
-  --color-text-secondary: #a3a3a3;
+  --color-primary: #e50914; /* Główny kolor (czerwień Netflixa) */
+  --color-primary-dark: #b2070f; /* Ciemniejszy odcień głównego koloru */
+  --color-surface: #141414; /* Kolor tła powierzchni (ciemny) */
+  --color-surface-dark: #000000; /* Bardzo ciemny kolor powierzchni */
+  --color-surface-light: #232323; /* Jaśniejszy odcień koloru powierzchni */
+  --color-text: #ffffff; /* Główny kolor tekstu (biały) */
+  --color-text-secondary: #a3a3a3; /* Drugorzędny kolor tekstu (szary) */
 }
 
-/* Global Styles */
+/* Global Styles - Podstawowe style dla całego dokumentu */
 * {
   margin: 0;
   padding: 0;
@@ -44,12 +65,11 @@ body {
   background-color: var(--color-surface);
   color: var(--color-text);
   line-height: 1.5;
-
 }
 
-/* Main Content Styles */
+/* Main Content Styles - Stylizacja głównej zawartości strony */
 .main-content {
-  padding-top: 50px; /* Space for fixed navbar */
+  padding-top: 50px; /* Odstęp dla stałego paska nawigacyjnego */
   min-height: 100vh;
 }
 
@@ -69,7 +89,7 @@ body {
   color: var(--color-text);
 }
 
-/* Button Styles */
+/* Button Styles - Stylizacja przycisków */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -102,7 +122,7 @@ body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Featured Movie */
+/* Featured Movie - Stylizacja sekcji z wyróżnionym filmem (np. na stronie głównej) */
 .featured-movie {
   position: relative;
   height: 80vh;
@@ -170,7 +190,7 @@ body {
   gap: 1rem;
 }
 
-/* Movie Categories */
+/* Movie Categories - Stylizacja sekcji kategorii filmów */
 .categories {
   padding: 2rem;
 }
@@ -208,7 +228,7 @@ body {
   gap: 1rem;
 }
 
-/* Movie Card */
+/* Movie Card - Stylizacja pojedynczej karty filmu */
 .movie-card {
   position: relative;
   aspect-ratio: 2/3;
@@ -286,7 +306,7 @@ body {
   color: var(--color-text-secondary);
 }
 
-/* Movie Details Overlay */
+/* Movie Details Overlay - Stylizacja nakładki z detalami filmu */
 .movie-details-overlay {
   position: fixed;
   top: 0;
@@ -389,7 +409,7 @@ body {
   gap: 1rem;
 }
 
-/* Category Page */
+/* Category Page - Stylizacja strony kategorii (Filmy.html, Kategorie.html) */
 .category-container {
   padding: 2rem;
   margin-top: 4rem;
@@ -433,14 +453,14 @@ body {
   color: var(--color-text);
 }
 
-/* Movies Grid */
+/* Movies Grid - Siatka filmów */
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
-/* Empty Watchlist */
+/* Empty Watchlist - Stylizacja komunikatu o pustej liście do obejrzenia */
 .empty-watchlist {
   text-align: center;
   padding: 2rem;
@@ -489,7 +509,7 @@ body {
   margin: 2rem;
 }
 
-/* Auth Pages */
+/* Auth Pages - Stylizacja stron logowania i rejestracji (Logowanie.html, Rejestracja.html) */
 .auth-container {
   min-height: 100vh;
   display: flex;
@@ -506,19 +526,36 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg');
+  background-image: url('https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg'); /* Tło dla stron autoryzacji */
   background-size: cover;
   background-position: center;
-  opacity: 0.2;
+  opacity: 0.05; /* Zmniejszona przezroczystość */
   z-index: 0;
+  pointer-events: none; /* Dodano, aby nie blokować kliknięć */
+}
+
+.featured-backdrop-log::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 100%
+  );
 }
 
 .auth-box {
   width: 100%;
   max-width: 400px;
-  background-color: var(--color-surface-light);
+  background-color: var(--color-surface-light); /* Zmieniono na jaśniejszy kolor dla trybu ciemnego */
   border-radius: 1rem;
   padding: 2rem;
+  z-index: 10; /* Zwiększono z-index, aby był na wierzchu */
 }
 
 .auth-header {
@@ -537,6 +574,7 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: var(--color-text); /* Zmieniono na biały dla trybu ciemnego */
 }
 
 .auth-subtitle {
@@ -568,8 +606,8 @@ body {
 .input-icon input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 3rem;
-  background-color: var(--color-surface);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: #2a2a2a; /* Jaśniejsze tło dla inputów w trybie ciemnym */
+  border: 1px solid rgba(255, 255, 255, 0.15); /* Subtelniejsza ramka */
   border-radius: 0.5rem;
   color: var(--color-text);
 }
@@ -634,7 +672,7 @@ body {
   color: var(--color-text);
 }
 
-/* Account Page */
+/* Account Page - Stylizacja strony konta użytkownika (Konto.html) */
 .account-main {
   max-width: 800px;
   margin: 6rem auto 2rem;
@@ -695,7 +733,7 @@ body {
   cursor: pointer;
 }
 
-/* Video Player */
+/* Video Player - Stylizacja strony odtwarzacza wideo (player.html) */
 .player-page {
   background-color: black;
 }
@@ -709,12 +747,12 @@ body {
 .video-player {
   position: relative;
   margin-bottom: 2rem;
-  min-height: 400px; /* Ensure minimum height for error messages */
+  min-height: 400px; /* Zapewnij minimalną wysokość dla komunikatów o błędach */
 }
 
 .video-wrapper {
   position: relative;
-  padding-top: 56.25%;
+  padding-top: 56.25%; /* Proporcje 16:9 */
 }
 
 .video-wrapper video {
@@ -733,14 +771,14 @@ body {
   margin: 0.5rem 0;
 }
 
-/* Responsive Design */
+/* Responsive Design - Media Queries dla responsywności */
 @media (max-width: 768px) {
   .nav-links {
-    display: none;
+    display: none; /* Ukryj linki nawigacyjne na małych ekranach */
   }
 
   .mobile-menu {
-    display: block;
+    display: block; /* Pokaż menu mobilne */
   }
 
   .featured-title {
@@ -752,7 +790,7 @@ body {
   }
 
   .action-buttons {
-    flex-direction: column;
+    flex-direction: column; /* Przyciski w kolumnie na małych ekranach */
   }
 
   .btn {
@@ -772,20 +810,15 @@ body {
   }
 }
 
-/* Navbar */
+/* Navbar - Stylizacja paska nawigacyjnego */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 50;
-  transition: background-color 0.3s;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-}
-
-.navbar.scrolled {
-  background-color: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(8px);
+  background-color: #111111; /* Stałe tło */
+  backdrop-filter: none; /* Usunięto rozmycie */
 }
 
 .navbar-container {
@@ -817,12 +850,12 @@ body {
 }
 
 .nav-links {
-  display: none;
+  display: none; /* Domyślnie ukryte na małych ekranach */
 }
 
 @media (min-width: 768px) {
   .nav-links {
-    display: flex;
+    display: flex; /* Pokaż na większych ekranach */
     gap: 2rem;
   }
 }
@@ -861,16 +894,16 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Mobile Menu */
+/* Mobile Menu - Stylizacja menu mobilnego */
 .mobile-menu {
-  display: none;
+  display: none; /* Domyślnie ukryte */
   background-color: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(8px);
   padding: 1rem;
 }
 
 .mobile-menu.active {
-  display: block;
+  display: block; /* Pokaż, gdy aktywne */
 }
 
 .mobile-nav {
@@ -884,7 +917,7 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  color: var(--color-text-secondary);
+  color: var(--color-text-secondary); /* Kolor linków w menu mobilnym */
   text-decoration: none;
   border-radius: 0.375rem;
   transition: all 0.2s;
@@ -895,7 +928,7 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Footer */
+/* Footer - Stylizacja stopki */
 .footer {
   background-color: rgba(0, 0, 0, 0.95);
   color: var(--color-text);
@@ -977,7 +1010,7 @@ body {
   color: var(--color-text);
 }
 
-/* Search Form */
+/* Search Form - Stylizacja formularza wyszukiwania w nawigacji */
 .search-form {
   position: absolute;
   top: 50%;
@@ -1020,7 +1053,7 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Search Dropdown */
+/* Search Dropdown - Stylizacja rozwijanej listy wyników wyszukiwania */
 .search-dropdown {
   position: absolute;
   top: 100%;
@@ -1144,7 +1177,7 @@ body {
   font-style: italic;
 }
 
-/* Cookie Notice */
+/* Cookie Notice - Stylizacja komunikatu o ciasteczkach */
 .cookie-notice {
  font-size: 0.875rem;
 color: var(--color-text-secondary);
@@ -1179,7 +1212,7 @@ font-size: 0.8rem;
 }
 }
 
-/* Animations */
+/* Animations - Ogólne animacje */
 @keyframes slideDown {
 from {
 transform: translateY(-100%);
@@ -1189,7 +1222,7 @@ transform: translateY(0);
 }
 }
 
-/* User Info */
+/* User Info - Stylizacja informacji o użytkowniku */
 .user-info {
 display: flex;
 align-items: center;
@@ -1204,13 +1237,15 @@ font-size: 0.875rem;
 transition: color 0.2s;
 }
 
-/* Auth Title Logo */
+/* Auth Title Logo - Stylizacja logo na stronach autoryzacji */
 .auth-title-logo {
 font-size: 2rem;
 font-weight: 700;
 color: var(--color-primary);
 margin-bottom: 1.5rem;
 }
+
+/* Video Unavailable - Stylizacja komunikatu o niedostępności wideo */
 .video-unavailable {
 position: absolute;
 top: 0;
@@ -1240,6 +1275,7 @@ padding: 0.75rem 1.5rem;
 font-size: 1rem;
 }
 
+/* Scrollbar - Stylizacja paska przewijania */
 ::-webkit-scrollbar-track {
 box-shadow: inset 0 0 0px #ff0000;
 border-radius: 0px;
@@ -1254,31 +1290,33 @@ border-radius: 1px;
 width: 6px;
 }
 
-/* Hide mobile menu on desktop */
+/* Hide mobile menu on desktop - Ukryj przełącznik menu mobilnego na desktopie */
 @media (min-width: 768px) {
 .menu-toggle {
 display: none;
 }
 }
+
+/* Cookie Popup Box Container - Stylizacja głównego kontenera okna ciasteczek */
 .cookiePopupBoxContainer {
 z-index: 999;
-width: 60%; /* Make it more square */
-max-width: 500px; /* Limit the maximum width */
-min-height: 200px; /* Ensure it has some height */
+width: 60%; /* Uczyń go bardziej kwadratowym */
+max-width: 500px; /* Ogranicz maksymalną szerokość */
+min-height: 200px; /* Zapewnij pewną wysokość */
 box-sizing: border-box;
 padding: 1rem;
 background-color: var(--color-surface-light);
 border-top: 1px solid rgba(255, 255, 255, 0.1);
 overflow: hidden;
 position: fixed;
-bottom: 50%; /* Vertically center */
+bottom: 50%; /* Wyśrodkuj pionowo */
 left: 50%;
-transform: translate(-50%, 50%); /* Adjust transform for vertical centering */
+transform: translate(-50%, 50%); /* Dostosuj transformację do pionowego centrowania */
 display: flex;
 justify-content: space-between;
 align-items: center;
-border-radius: 1rem; /* Add some rounded corners */
-text-align: center; /* Center the content horizontally */
+border-radius: 1rem; /* Dodaj zaokrąglone rogi */
+text-align: center; /* Wyśrodkuj zawartość poziomo */
 }
 .cookiePopupBoxContainer .cookieTitle a {
 font-family: sans-serif;
@@ -1334,7 +1372,7 @@ margin-bottom: 1rem;
 }
 }
 
-/* Payment License Selection Modal */
+/* Payment License Selection Modal - Stylizacja modalu wyboru licencji płatności */
 .payment-modal {
     position: fixed;
     top: 0;
@@ -1535,7 +1573,7 @@ margin-bottom: 1rem;
     cursor: not-allowed;
 }
 
-/* Responsive */
+/* Responsive - Media Query dla modalu płatności */
 @media (max-width: 768px) {
     .payment-modal-content {
         padding: 1.5rem;
@@ -1553,4 +1591,81 @@ margin-bottom: 1rem;
     .payment-actions .btn {
         width: 100%;
     }
+}
+
+/* Theme Switcher Styles */
+.theme-switcher {
+    position: relative;
+    display: inline-block;
+    width: 120px; /* Zmniejszona szerokość */
+    height: 30px; /* Zmniejszona wysokość */
+    margin-right: 1rem;
+}
+
+.theme-toggle-checkbox {
+    display: none;
+}
+
+.theme-toggle-label {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-surface-light); /* Darker background for dark mode */
+    border-radius: 15px; /* Half of height for pill shape */
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s;
+    overflow: hidden; /* Hide overflowing icons */
+}
+
+.theme-toggle-label .toggle-icon {
+    opacity: 0; /* Hide icons permanently */
+    position: absolute; /* Keep position for layout consistency */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    color: var(--color-text-secondary);
+}
+
+.theme-toggle-label .toggle-ball {
+    position: absolute;
+    width: 26px; /* Slightly smaller than height to show border */
+    height: 26px;
+    background-color: var(--color-primary); /* Primary color for the ball */
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease, background-color 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Checked state for dark mode */
+.theme-toggle-checkbox:checked + .theme-toggle-label {
+    background-color: var(--color-surface-light); /* Stays dark for dark mode */
+}
+
+.theme-toggle-checkbox:checked + .theme-toggle-label .toggle-ball {
+    transform: translateX(88px); /* Move to the right for dark mode (120 - 26 - 2*2 = 88) */
+    background-color: var(--color-primary); /* Stays primary for dark mode */
+}
+
+/* Text inside the label (Day/Night Mode) */
+.theme-toggle-label::before {
+    content: 'TRYB DZIENNY'; /* Day mode text */
+    position: absolute;
+    left: 40px; /* Adjusted position */
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text);
+    font-size: 0.7rem; /* Zmniejszona czcionka */
+    font-weight: 600;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.theme-toggle-checkbox:checked + .theme-toggle-label::before {
+    content: 'TRYB NOCNY'; /* Night mode text */
+    left: 12px; /* Adjusted position */
+    color: var(--color-text);
 }
